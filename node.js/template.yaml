@@ -53,7 +53,7 @@ spec:
         values:
           componentId: ${{ parameters.componentId }}
           description: ${{ parameters.description }}
-          destination: ${{ parameters.repoUrl }}
+          owner: ${{ parameters.owner }}
 
     # Publish the files to a new GitHub repository
     - id: publish
