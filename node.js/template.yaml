@@ -41,6 +41,8 @@ spec:
           ui:options:
             allowedHosts:
               - github.com
+            allowedOwners:
+              - devops-end2end
 
   # 2. Define the execution steps
   steps:
@@ -69,7 +71,7 @@ spec:
       name: Register to Catalog
       action: catalog:register
       input:
-        catalogInfoUrl: ${{ "https://" + (parameters.repoUrl | parseRepoUrl | pick("host")) + "/" + (parameters.repoUrl | parseRepoUrl | pick("owner")) + "/" + (parameters.repoUrl | parseRepoUrl | pick("repo")) + "/blob/main/catalog-info.yaml" }}
+        catalogInfoPath: http://github.com/{{ repoUrl.owner }}/{{ parameters.componentId }}/blob/master/catalog-info.yaml
 
   # 3. Output links shown to the user upon completion
   output:
