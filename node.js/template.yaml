@@ -69,7 +69,7 @@ spec:
     # Register the newly created component into the Backstage Catalog
     - id: register
       name: Register to Catalog
-      action: catalog:register
+      action: catalog:registers
       input:
         catalogInfoUrl: ${{ steps['publish'].output.remoteUrl + '/blob/main/catalog-info.yaml' }}
 
