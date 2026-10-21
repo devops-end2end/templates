@@ -27,7 +27,7 @@ spec:
         owner:
           title: Owner
           type: string
-          description: Owner of the component (e.g., group:default/engineering)
+          description: Owner of the component (e.g., group:default/platform-engineering)
           ui:field: OwnerPicker
 
     - title: Choose a Location
@@ -71,7 +71,7 @@ spec:
       name: Register to Catalog
       action: catalog:register
       input:
-        catalogInfoUrl:  ${{ 'https://github.com/devops-end2end/' + parameters.componentId + '/tree/main/catalog-info.yaml' }}
+        catalogInfoUrl:  ${{ 'https://github.com/' + parameters.RepoUrlPicker.owner + '/' + parameters.componentId + '/tree/main/catalog-info.yaml' }}
 
   # 3. Output links shown to the user upon completion
   output:
