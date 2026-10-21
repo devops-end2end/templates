@@ -75,8 +75,8 @@ spec:
       name: Register to Catalog
       action: catalog:register
       input:
-        # repoContentsUrl: ${{ steps['publish'].output.repoContentsUrl }}
-        catalogInfoPath: http://github.com/{{ repoUrl.owner }}/{{ parameters.componentId }}/blob/master/catalog-info.yaml
+        repoContentsUrl: ${{ steps['publish-repo1'].output.repoContentsUrl }}
+        catalogInfoPath: '/catalog-info.yaml'
 
   # 3. Output links shown to the user upon completion
   output:
