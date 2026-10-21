@@ -5,5 +5,5 @@ metadata:
   description: ${{ values.description }}
 spec:
   type: service
-  owner: ${{ values.owner }}
   lifecycle: experimental
+  owner: ${{ values.owner }}
