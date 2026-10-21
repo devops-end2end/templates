@@ -63,7 +63,6 @@ spec:
         repoUrl: ${{ parameters.repoUrl }}
         description: ${{ parameters.description }}
         gitCommitMessage: 'Initial commit from Backstage Scaffolder'
-        optional: true
 
     # Register the newly created component into the Backstage Catalog
     # - id: register
@@ -78,7 +77,6 @@ spec:
       input:
         # repoContentsUrl: ${{ steps['publish'].output.repoContentsUrl }}
         catalogInfoPath: http://github.com/{{ repoUrl.owner }}/{{ parameters.componentId }}/blob/master/catalog-info.yaml
-        optional: true
 
   # 3. Output links shown to the user upon completion
   output:
