@@ -41,6 +41,8 @@ spec:
           ui:options:
             allowedHosts:
               - github.com
+            allowedOwners:
+              - devops-end2end
 
   # 2. Define the execution steps
   steps:
