@@ -71,7 +71,8 @@ spec:
       name: Register to Catalog
       action: catalog:register
       input:
-        catalogInfoPath: http://github.com/{{ repoUrl.owner }}/{{ parameters.componentId }}/blob/master/catalog-info.yaml
+        repoContentsUrl: http://github.com/{{ repoUrl.owner }}/{{ parameters.componentId }}/blob/master
+        catalogInfoPath: /catalog-info.yaml
 
   # 3. Output links shown to the user upon completion
   output:
