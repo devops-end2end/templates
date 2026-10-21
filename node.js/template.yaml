@@ -77,7 +77,7 @@ spec:
       name: Register to Catalog
       action: catalog:register
       input:
-        catalogInfoPath: https://github.com/devops-end2end/${{ parameters.componentId }}/blob/master/catalog-info.yaml
+        catalogInfoPath: https://github.com/devops-end2end/6/blob/master/catalog-info.yaml
 
   # 3. Output links shown to the user upon completion
   output:
