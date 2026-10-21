@@ -65,18 +65,11 @@ spec:
         gitCommitMessage: 'Initial commit from Backstage Scaffolder'
 
     # Register the newly created component into the Backstage Catalog
-    # - id: register
-    #   name: Register to Catalog
-    #   action: catalog:register
-    #   input:
-    #     catalogInfoUrl: ${{ steps['publish'].output.remoteUrl + '/blob/main/catalog-info.yaml' }}
-
     - id: register
       name: Register to Catalog
       action: catalog:register
       input:
-        repoContentsUrl: ${{ steps['publish-repo1'].output.repoContentsUrl }}
-        catalogInfoPath: '/catalog-info.yaml'
+        catalogInfoUrl: ${{ "https://" + (parameters.repoUrl | parseRepoUrl | pick("host")) + "/" + (parameters.repoUrl | parseRepoUrl | pick("owner")) + "/" + (parameters.repoUrl | parseRepoUrl | pick("repo")) + "/blob/main/catalog-info.yaml" }}
 
   # 3. Output links shown to the user upon completion
   output:
