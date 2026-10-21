@@ -78,7 +78,7 @@ spec:
       action: catalog:register
       input:
         # repoContentsUrl: ${{ steps['publish'].output.repoContentsUrl }}
-        catalogInfoPath: http://github.com/${{ parameters.RepoUrlPicker.owner }}/${{ parameters.repoUrl.repo }}/blob/master/catalog-info.yaml
+        catalogInfoPath: http://github.com/devops-end2end/${{ parameters.componentId }}/blob/master/catalog-info.yaml
         optional: true
 
   # 3. Output links shown to the user upon completion
