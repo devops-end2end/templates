@@ -63,6 +63,7 @@ spec:
         repoUrl: ${{ parameters.repoUrl }}
         description: ${{ parameters.description }}
         gitCommitMessage: 'Initial commit from Backstage Scaffolder'
+        optional: true
 
     # Register the newly created component into the Backstage Catalog
     # - id: register
