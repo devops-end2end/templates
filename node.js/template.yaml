@@ -79,7 +79,7 @@ spec:
       input:
         # repoContentsUrl: ${{ steps['publish'].output.repoContentsUrl }}
         catalogInfoPath: http://github.com/devops-end2end/fuck-yeah662d/blob/master/catalog-info.yaml
-        # optional: true
+        optional: true
 
   # 3. Output links shown to the user upon completion
   output:
