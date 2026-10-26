@@ -82,14 +82,7 @@ spec:
         description: ${{ parameters.description }}
         gitCommitMessage: 'Initial commit from Backstage Scaffolder'
 
-    # Register the newly created component into the Backstage Catalog (Using safe repoContentsUrl)
-    - id: register
-      name: Register to Catalog
-      action: catalog:register
-      input:
-        catalogInfoUrl: "${{ steps['publish'].output.remoteUrl }}"
-
-  # 3. Output links shown to the user upon completion
+  # 2. Output links shown to the user upon completion
   output:
     links:
       - title: Repository
