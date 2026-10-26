@@ -1,0 +1,10 @@
+apiVersion: backstage.io/v1alpha1
+kind: Location
+metadata:
+  name: devops-end2end-templates-root
+  description: Grouping all software templates for the organization
+spec:
+  targets:
+    - ./node.js/template.yaml
+    - ./python/template.yaml
+    # - ./java/template.yaml
