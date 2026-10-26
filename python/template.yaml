@@ -1,0 +1,99 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: python-service-template
+  title: Python Service Template
+  description: Creates a new Python microservice repository in GitHub
+  tags:
+    - python
+    - fastapi
+    - microservice
+    - rest
+spec:
+  owner: group:default/engineering
+  type: service
+
+  # 1. Define UI inputs gathered from the user
+  parameters:
+    - title: Component Details
+      required:
+        - componentId
+        - owner
+        - pythonVersion
+      properties:
+        componentId:
+          title: Component ID
+          type: string
+          description: Unique name of the service (e.g., my-python-service)
+          ui:autofocus: true
+        description:
+          title: Description
+          type: string
+          description: Short description of the service
+        pythonVersion:
+          title: Python Version
+          type: string
+          description: Python version for the service runtime and dependencies
+          default: '3.12'
+          enum:
+            - '3.12'
+            - '3.11'
+            - '3.10'
+        owner:
+          title: Owner
+          type: string
+          description: Owner of the component (e.g., group:default/platform-engineering)
+          ui:field: OwnerPicker
+
+    - title: Choose a Location
+      required:
+        - repoUrl
+      properties:
+        repoUrl:
+          title: Repository Location
+          type: string
+          ui:field: RepoUrlPicker
+          ui:options:
+            allowedHosts:
+              - github.com
+            allowedOwners:
+              - devops-end2end
+
+  # 2. Define the execution steps
+  steps:
+    # Fetch template files from skeleton directory and template parameters into them
+    - id: fetch-base
+      name: Fetch Skeleton Files
+      action: fetch:template
+      input:
+        url: ./skeleton
+        values:
+          componentId: ${{ parameters.componentId }}
+          description: ${{ parameters.description }}
+          owner: ${{ parameters.owner }}
+          pythonVersion: ${{ parameters.pythonVersion }}
+
+    # Publish the files to a new GitHub repository
+    - id: publish
+      name: Publish to GitHub
+      action: publish:github
+      input:
+        repoUrl: ${{ parameters.repoUrl }}
+        description: ${{ parameters.description }}
+        gitCommitMessage: 'Initial commit from Backstage Scaffolder'
+
+    # Register the newly created component into the Backstage Catalog (Using safe repoContentsUrl)
+    - id: register
+      name: Register to Catalog
+      action: catalog:register
+      input:
+        catalogInfoUrl: ${{ 'https://github.com/devops-end2end/' + parameters.componentId + '/tree/main/catalog-info.yaml' }}
+
+  # 3. Output links shown to the user upon completion
+  output:
+    links:
+      - title: Repository
+        url: ${{ steps.publish.output.remoteUrl }}
+      - title: Open in Catalog
+        icon: catalog
+        entityRef: ${{ steps.register.output.entityRef }}
