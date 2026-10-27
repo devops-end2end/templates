@@ -90,7 +90,7 @@ spec:
       input:
         repoName: ${{ parameters.componentId }}
         region: us-east-1
-        imageMutability: false  # false = MUTABLE, true = IMMUTABLE
+        imageMutability: true  # false = MUTABLE, true = IMMUTABLE
         scanOnPush: false
         tags:
           - Key: Owner
@@ -105,6 +105,4 @@ spec:
         url: ${{ steps.publish.output.remoteUrl }}
       - title: ECR Repository
         url: https://console.aws.amazon.com/ecr/repositories/private/us-east-1/${{ parameters.componentId }}?region=us-east-1
-      - title: Open in Catalog
-        icon: catalog
-        entityRef: ${{ steps.register.output.entityRef }}
+

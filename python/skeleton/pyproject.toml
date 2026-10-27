@@ -1,5 +1,6 @@
 [project]
 name = "${{ values.componentId }}"
+# Only manage the first two digits(Major.Minor) version , the third digit (Patch) is managed by GitHub Action
 version = "0.1.0"
 description = "${{ values.description }}"
 readme = "README.md"
