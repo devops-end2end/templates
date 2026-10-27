@@ -86,11 +86,13 @@ spec:
     
     - id: create-ecr
       name: Create ECR Repository
-      action: aws:cloudcontrol:create
+      action: roadiehq:aws:ecr:create
       input:
-        typeName: 'AWS::ECR::Repository'
-        desiredState: '{"RepositoryName": "${{ parameters.componentId }}"}'
-        wait: true
+        repoName: ${{ parameters.componentId }}
+        tags: {}
+        imageMutability: MUTABLE
+        scanOnPush: false
+        region: us-east-1
         
   # 3. Output links shown to the user upon completion
   output:
