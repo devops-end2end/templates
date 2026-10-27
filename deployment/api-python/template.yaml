@@ -1,0 +1,74 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: python-api-deployment-template
+  title: Python API Deployment Template
+  description: Generates GitOps deployment manifests and creates a Pull Request in the gitops repository under /apps/<componentId>
+  tags:
+    - deployment
+    - gitops
+    - kubernetes
+    - python
+    - kustomize
+    - argocd
+spec:
+  owner: group:default/engineering
+  type: deployment
+
+  # 1. Define UI inputs gathered from the user
+  parameters:
+    - title: Component Details
+      required:
+        - componentId
+        - description
+        - owner
+      properties:
+        componentId:
+          title: Component ID
+          type: string
+          description: Unique name of the service (e.g., my-python-service)
+          ui:autofocus: true
+        description:
+          title: Description
+          type: string
+          description: Short description of the service
+        owner:
+          title: Owner
+          type: string
+          description: Owner of the component (e.g., group:default/platform-engineering)
+          default: "group:default/platform-engineering"
+          ui:field: OwnerPicker
+
+  # 2. Define execution steps
+  steps:
+    # Render the deployment templates from skeleton into a staging workspace directory
+    - id: fetch-deployment-templates
+      name: Fetch Python API Deployment Templates
+      action: fetch:template
+      input:
+        url: ./skeleton
+        targetPath: ./gitops-staging
+        values:
+          componentId: ${{ parameters.componentId }}
+          description: ${{ parameters.description }}
+          owner: ${{ parameters.owner }}
+
+    # Open a Pull Request on the gitops repo targeting /apps/<componentId>
+    - id: publish-gitops-pr
+      name: Create GitOps PR for Deployment Configs
+      action: publish:github:pull-request
+      input:
+        repoUrl: github.com?owner=devops-end2end&repo=gitops
+        branchName: feat/add-deployment-${{ parameters.componentId }}
+        targetBranchName: main
+        title: "feat(${{ parameters.componentId }}): add deployment configurations"
+        description: "Automated PR generated via Backstage template to add deployment manifests for ${{ parameters.componentId }}."
+        sourcePath: ./gitops-staging
+        targetPath: apps/${{ parameters.componentId }}
+        commitMessage: "feat(${{ parameters.componentId }}): bootstrap deployment configs"
+
+  # 3. Output links shown to the user upon completion
+  output:
+    links:
+      - title: GitOps Pull Request
+        url: ${{ steps.publish-gitops-pr.output.remoteUrl }}

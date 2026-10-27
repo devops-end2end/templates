@@ -7,4 +7,5 @@ spec:
   targets:
     - ./node.js/template.yaml
     - ./python/template.yaml
+    - ./deployment/api-python/template.yaml
     # - ./java/template.yaml

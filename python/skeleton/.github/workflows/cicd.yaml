@@ -33,7 +33,7 @@ jobs:
     with:
       GITOPS_REPO: "gitops"
       IMAGE: {% raw %}${{ needs.build.outputs.image }}{% endraw %}
-      APPSET_PATH: "${{ values.componentId }}/release-configs/${{ values.componentId }}.yaml"
+      APPSET_PATH: "apps/${{ values.componentId }}/release-configs/test.yaml"
       PROJECT_NAME: "${{ values.componentId }}"
       TIMEOUT: "120"
       CHECK_HEALTH: "true"
@@ -49,7 +49,7 @@ jobs:
         run: |
           echo "Executing test suite against TEST environment..."
           echo "Querying http://${{ values.componentId }}.test.svc.cluster.local:8000/api/v1/health..."
-          response=$(curl -s http://${{ values.componentId }}.test.svc.cluster.local:8000/api/v1/health)
+          response=$(curl -sL http://${{ values.componentId }}.test.svc.cluster.local:8000/api/v1/health)
           echo "Received response: $response"
           
           status=$(echo "$response" | grep -o '"status":"[^"]*"' | cut -d'"' -f4)
@@ -77,7 +77,7 @@ jobs:
     with:
       GITOPS_REPO: "gitops"
       IMAGE:  {% raw %}${{ needs.build.outputs.image }}{% endraw %}
-      APPSET_PATH: "${{ values.componentId }}/release-configs/${{ values.componentId }}.yaml"
+      APPSET_PATH: "apps/${{ values.componentId }}/release-configs/prod.yaml"
       PROJECT_NAME: "${{ values.componentId }}"
       TIMEOUT: "300"
       CHECK_HEALTH: "true"

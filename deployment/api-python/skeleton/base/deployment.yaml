@@ -1,0 +1,69 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ${{ values.componentId }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
+spec:
+  replicas: 1
+
+  selector:
+    matchLabels:
+      app: ${{ values.componentId }}
+
+  template:
+    metadata:
+      labels:
+        app: ${{ values.componentId }}
+
+    spec:
+      containers:
+        - name: ${{ values.componentId }}
+          image: 932399238655.dkr.ecr.us-east-1.amazonaws.com/${{ values.componentId }}
+
+          ports:
+            - containerPort: 8000
+              protocol: TCP
+
+          envFrom:
+            - configMapRef:
+                name: app-configmap
+
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
+
+          startupProbe:
+            httpGet:
+              scheme: HTTP
+              path: /api/v1/health/
+              port: 8000
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            successThreshold: 1
+            failureThreshold: 30
+            timeoutSeconds: 3
+
+          livenessProbe:
+            httpGet:
+              scheme: HTTP
+              path: /api/v1/health/
+              port: 8000
+            periodSeconds: 10
+            successThreshold: 1
+            failureThreshold: 3
+            timeoutSeconds: 3
+
+          readinessProbe:
+            httpGet:
+              scheme: HTTP
+              path: /api/v1/health/
+              port: 8000
+            periodSeconds: 10
+            successThreshold: 1
+            failureThreshold: 3
+            timeoutSeconds: 3

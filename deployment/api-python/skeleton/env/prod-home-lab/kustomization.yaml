@@ -1,0 +1,21 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: prod
+nameSuffix: -prod-home-lab
+
+resources:
+  - ../../base
+
+configMapGenerator:
+  - name: app-configmap
+    behavior: merge
+    envs:
+      - config.conf
+
+patches:
+  - path: patch-deployment.yaml
+
+images:
+  - name: 932399238655.dkr.ecr.us-east-1.amazonaws.com/${{ values.componentId }}
+    newTag: latest
