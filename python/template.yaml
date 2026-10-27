@@ -44,6 +44,7 @@ spec:
           title: Owner
           type: string
           description: Owner of the component (e.g., group:default/platform-engineering)
+          default: "group:default/platform-engineering"
           ui:field: OwnerPicker
 
     - title: Choose a Location
@@ -82,12 +83,22 @@ spec:
         repoUrl: ${{ parameters.repoUrl }}
         description: ${{ parameters.description }}
         gitCommitMessage: 'Initial commit from Backstage Scaffolder'
-
-  # 2. Output links shown to the user upon completion
+    
+    - id: create-ecr
+      name: Create ECR Repository
+      action: aws:cloudcontrol:create
+      input:
+        typeName: 'AWS::ECR::Repository'
+        desiredState: '{"RepositoryName": "${{ parameters.componentId }}"}'
+        wait: true
+        
+  # 3. Output links shown to the user upon completion
   output:
     links:
       - title: Repository
         url: ${{ steps.publish.output.remoteUrl }}
+      - title: ECR Repository
+        url: https://console.aws.amazon.com/ecr/repositories/private/us-east-1/${{ parameters.componentId }}?region=us-east-1
       - title: Open in Catalog
         icon: catalog
         entityRef: ${{ steps.register.output.entityRef }}
