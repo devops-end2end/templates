@@ -3,6 +3,8 @@ kind: Component
 metadata:
   name: ${{ values.componentId }}
   description: ${{ values.description }}
+  tags:
+    - python
   annotations:
     github.com/project-slug: devops-end2end/${{ values.componentId }}
     backstage.io/techdocs-ref: dir:.
