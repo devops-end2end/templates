@@ -18,6 +18,7 @@ spec:
     - title: Component Details
       required:
         - componentId
+        - description
         - owner
         - pythonVersion
       properties:
