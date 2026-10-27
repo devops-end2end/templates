@@ -89,10 +89,14 @@ spec:
       action: roadiehq:aws:ecr:create
       input:
         repoName: ${{ parameters.componentId }}
-        tags: {}
-        imageMutability: MUTABLE
-        scanOnPush: false
         region: us-east-1
+        imageMutability: false  # false = MUTABLE, true = IMMUTABLE
+        scanOnPush: false
+        tags:
+          - Key: Owner
+            Value: ${{ parameters.owner }}
+          - Key: ManagedBy
+            Value: Backstage
         
   # 3. Output links shown to the user upon completion
   output:
