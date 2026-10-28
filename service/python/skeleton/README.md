@@ -39,12 +39,3 @@ The API will be available at:
 ```bash
 pytest
 ```
-
-## Docker
-
-Build and run the containerized service:
-
-```bash
-docker build -t ${{ values.componentId }} .
-docker run -p 8000:8000 ${{ values.componentId }}
-```

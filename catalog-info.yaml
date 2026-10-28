@@ -5,7 +5,13 @@ metadata:
   description: Grouping all software templates for the organization
 spec:
   targets:
-    - ./node.js/template.yaml
-    - ./python/template.yaml
-    - ./deployment/api-python/template.yaml
-    # - ./java/template.yaml
+    - ./service/python/template.yaml
+    - ./deployment/api/template.yaml
+    # - ./service/nodejs/template.yaml
+    # - ./service/java/template.yaml
+    # - ./service/go/template.yaml
+    # - ./deployment/worker/template.yaml
+    # - ./deployment/argo-cronworkflow/template.yaml
+    # - ./deployment/argo-workflow/template.yaml
+    # - ./deployment/cronjob/template.yaml
+    # - ./deployment/job/template.yaml

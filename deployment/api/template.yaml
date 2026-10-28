@@ -1,14 +1,14 @@
 apiVersion: scaffolder.backstage.io/v1beta3
 kind: Template
 metadata:
-  name: python-api-deployment-template
-  title: Python API Deployment Template
+  name: api-deployment-template
+  title: API Deployment Template
   description: Generates GitOps deployment manifests and creates a Pull Request in the gitops repository under /apps/<componentId>
   tags:
     - deployment
     - gitops
     - kubernetes
-    - python
+    - api
     - kustomize
     - argocd
 spec:
@@ -43,7 +43,7 @@ spec:
   steps:
     # Render the deployment templates from skeleton into a staging workspace directory
     - id: fetch-deployment-templates
-      name: Fetch Python API Deployment Templates
+      name: Fetch API Deployment Templates
       action: fetch:template
       input:
         url: ./skeleton
