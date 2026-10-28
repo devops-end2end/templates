@@ -5,7 +5,7 @@ from app.api.router import api_router
 app = FastAPI(
     title=settings.app_name,
     description="${{ values.description }}",
-    version="0.1.0",
+    version="0.1",
 )
 
 app.include_router(api_router, prefix="/api/v1")

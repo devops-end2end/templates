@@ -48,8 +48,8 @@ jobs:
       - name: Run Integration & Health Tests
         run: |
           echo "Executing test suite against TEST environment..."
-          echo "Querying http://${{ values.componentId }}.test.svc.cluster.local:8000/api/v1/health..."
-          response=$(curl -sL http://${{ values.componentId }}.test.svc.cluster.local:8000/api/v1/health)
+          echo "Querying http://${{ values.componentId }}-test-home1.test.svc.cluster.local:8000/api/v1/health..."
+          response=$(curl -sL --retry 5 --retry-connrefused --retry-delay 2 http://${{ values.componentId }}-test-home1.test.svc.cluster.local:8000/api/v1/health)
           echo "Received response: $response"
           
           status=$(echo "$response" | grep -o '"status":"[^"]*"' | cut -d'"' -f4)
