@@ -17,6 +17,8 @@ spec:
         app: ${{ values.componentId }}
 
     spec:
+      imagePullSecrets:
+        - name: ecr-docker-secret    
       containers:
         - name: ${{ values.componentId }}
           image: 932399238655.dkr.ecr.us-east-1.amazonaws.com/${{ values.componentId }}
