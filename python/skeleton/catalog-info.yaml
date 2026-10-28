@@ -5,6 +5,13 @@ metadata:
   description: ${{ values.description }}
   tags:
     - python
+  links:
+    - url: http://argocd.local/applications/argocd/${{ values.componentId }}-prod-home1
+      title: ArgoCD (Prod)
+      icon: dashboard
+    - url: http://argocd.local/applications/argocd/${{ values.componentId }}-test-home1
+      title: ArgoCD (Test)
+      icon: dashboard
   annotations:
     github.com/project-slug: devops-end2end/${{ values.componentId }}
     backstage.io/techdocs-ref: dir:.
