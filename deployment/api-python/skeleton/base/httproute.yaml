@@ -1,0 +1,24 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: ${{ values.componentId }}-route
+spec:
+  parentRefs:
+    - group: gateway.networking.k8s.io
+      kind: Gateway
+      name: eg
+      namespace: envoy-gateway-system
+      sectionName: http # Change to https to terminate TLS at the gateway
+  hostnames:
+    - "${{ values.componentId }}.local"
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      backendRefs:
+        - name: ${{ values.componentId }}
+          port: 8000
+          group: ""
+          kind: Service
+          weight: 1

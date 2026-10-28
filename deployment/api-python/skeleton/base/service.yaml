@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ${{ values.componentId }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+spec:
+  type: ClusterIP
+  selector:
+    app: ${{ values.componentId }}
+  ports:
+    - name: http
+      protocol: TCP
+      port: 8000
+      targetPort: 8000

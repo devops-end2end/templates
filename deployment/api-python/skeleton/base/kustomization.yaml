@@ -3,7 +3,11 @@ kind: Kustomization
 
 resources:
   - deployment.yaml
-  - gateway.yaml
+  - httproute.yaml
+  - service.yaml
+  
+configurations:
+  - kustomizeconfig.yaml
 
 configMapGenerator:
   - name: app-configmap
