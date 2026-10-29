@@ -1,0 +1,86 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: nodejs-express-golden-path
+  title: Node.js Express API Service Golden Path
+  description: Production-ready Node.js Express microservice template adhering to enterprise standards.
+  tags:
+    - nodejs
+    - express
+    - rest-api
+    - golden-path
+spec:
+  owner: platform-engineering
+  type: service
+
+  parameters:
+    - title: Provide Service Metadata
+      required:
+        - componentId
+        - description
+        - owner
+      properties:
+        componentId:
+          title: Component ID
+          type: string
+          description: Unique slug/name of the service (e.g. user-api)
+          ui:field: EntityNamePicker
+        description:
+          title: Description
+          type: string
+          description: Brief description of what this service does
+        owner:
+          title: Owner
+          type: string
+          description: Owner of the component (Team or User)
+          ui:field: OwnerPicker
+          ui:options:
+            catalogFilter:
+              kind: Group
+
+    - title: Choose Repository Location
+      required:
+        - repoUrl
+      properties:
+        repoUrl:
+          title: Repository Location
+          type: string
+          ui:field: RepoUrlPicker
+          ui:options:
+            allowedHosts:
+              - github.com
+
+  steps:
+    - id: fetch
+      name: Fetch Skeleton Boilerplate
+      action: fetch:template
+      input:
+        url: ./skeleton
+        values:
+          componentId: ${{ parameters.componentId }}
+          description: ${{ parameters.description }}
+          owner: ${{ parameters.owner }}
+
+    - id: publish
+      name: Publish to Git Repository
+      action: publish:github
+      input:
+        allowedHosts:
+          - github.com
+        description: ${{ parameters.description }}
+        repoUrl: ${{ parameters.repoUrl }}
+        access: 'private'
+
+    - id: register
+      name: Register in Backstage Catalog
+      action: catalog:register
+      input:
+        catalogInfoUrl: "${{ steps['publish'].output.catalogInfoUrl }}"
+
+  output:
+    links:
+      - title: Repository
+        url: ${{ steps['publish'].output.remoteUrl }}
+      - title: Open in Catalog
+        icon: catalog
+        entityRef: ${{ steps['publish'].output.entityRef }}
