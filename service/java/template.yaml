@@ -70,7 +70,7 @@ spec:
           componentId: ${{ parameters.componentId }}
           description: ${{ parameters.description }}
           owner: ${{ parameters.owner }}
-          pythonVersion: ${{ parameters.pythonVersion }}
+          java_version: ${{ parameters.java_version }}
 
     - id: publish
       name: Publish to GitHub
