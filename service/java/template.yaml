@@ -47,7 +47,7 @@ spec:
             - "21"
           description: Select the target Java version for your microservice toolchain.
 
-    - title: Choose Repository Location
+    - title: Choose a Location
       required:
         - repoUrl
       properties:
@@ -62,25 +62,24 @@ spec:
               - devops-end2end
 
   steps:
-    - id: fetch
-      name: Fetch Skeleton Boilerplate
+    - id: fetch-base
+      name: Fetch Skeleton Files
       action: fetch:template
       input:
-        url: ./content
+        url: ./skeleton
         values:
           componentId: ${{ parameters.componentId }}
           description: ${{ parameters.description }}
           owner: ${{ parameters.owner }}
+          pythonVersion: ${{ parameters.pythonVersion }}
 
     - id: publish
-      name: Publish to Git Repository
+      name: Publish to GitHub
       action: publish:github
       input:
-        allowedHosts:
-          - github.com
-        description: ${{ parameters.description }}
         repoUrl: ${{ parameters.repoUrl }}
-        access: 'private'
+        description: ${{ parameters.description }}
+        gitCommitMessage: 'Initial commit from Backstage Scaffolder'
 
 
     - id: create-ecr
@@ -100,7 +99,7 @@ spec:
   output:
     links:
       - title: Repository
-        url: ${{ steps['publish'].output.remoteUrl }}
-      - title: Open in Catalog
-        icon: catalog
-        entityRef: ${{ steps['publish'].output.entityRef }}
+        url: ${{ steps.publish.output.remoteUrl }}
+      - title: ECR Repository
+        url: https://console.aws.amazon.com/ecr/repositories/private/us-east-1/${{ parameters.componentId }}?region=us-east-1
+
