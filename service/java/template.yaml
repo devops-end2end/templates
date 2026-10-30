@@ -22,8 +22,8 @@ spec:
         componentId:
           title: Component ID
           type: string
-          description: Unique slug/name of the service (e.g. billing-service)
-          ui:field: EntityNamePicker
+          description: Unique name of the service (e.g., my-python-service)
+          ui:autofocus: true
         description:
           title: Description
           type: string
@@ -31,11 +31,9 @@ spec:
         owner:
           title: Owner
           type: string
-          description: Owner of the component (Team or User)
+          description: Owner of the component (e.g., group:default/platform-engineering)
+          default: "group:default/platform-engineering"
           ui:field: OwnerPicker
-          ui:options:
-            catalogFilter:
-              kind: Group
         java_version:
           title: Java Runtime Version
           type: string
