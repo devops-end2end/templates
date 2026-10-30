@@ -28,12 +28,6 @@ spec:
           title: Description
           type: string
           description: Brief description of what this service does
-        owner:
-          title: Owner
-          type: string
-          description: Owner of the component (e.g., group:default/platform-engineering)
-          default: "group:default/platform-engineering"
-          ui:field: OwnerPicker
         java_version:
           title: Java Runtime Version
           type: string
@@ -44,6 +38,12 @@ spec:
             - "17"
             - "21"
           description: Select the target Java version for your microservice toolchain.
+        owner:
+          title: Owner
+          type: string
+          description: Owner of the component (e.g., group:default/platform-engineering)
+          default: "group:default/platform-engineering"
+          ui:field: OwnerPicker          
 
     - title: Choose a Location
       required:
