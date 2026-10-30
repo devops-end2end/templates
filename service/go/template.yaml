@@ -36,6 +36,15 @@ spec:
           ui:options:
             catalogFilter:
               kind: Group
+        go_version:
+          title: Go Version
+          type: string
+          default: "1.22"
+          enum:
+            - "1.21"
+            - "1.22"
+            - "1.23"
+          description: Select the target Go version for your microservice.
 
     - title: Choose Repository Location
       required:
@@ -48,6 +57,8 @@ spec:
           ui:options:
             allowedHosts:
               - github.com
+            allowedOwners:
+              - devops-end2end
 
   steps:
     - id: fetch
@@ -71,11 +82,19 @@ spec:
         repoUrl: ${{ parameters.repoUrl }}
         access: 'private'
 
-    - id: register
-      name: Register in Backstage Catalog
-      action: catalog:register
+    - id: create-ecr
+      name: Create ECR Repository
+      action: roadiehq:aws:ecr:create
       input:
-        catalogInfoUrl: "${{ steps['publish'].output.catalogInfoUrl }}"
+        repoName: ${{ parameters.componentId }}
+        region: us-east-1
+        imageMutability: true  # false = MUTABLE, true = IMMUTABLE
+        scanOnPush: false
+        tags:
+          - Key: Owner
+            Value: ${{ parameters.owner }}
+          - Key: ManagedBy
+            Value: Backstage
 
   output:
     links:

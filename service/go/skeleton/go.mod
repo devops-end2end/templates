@@ -1,3 +1,3 @@
-module github.com/${{ values.repoUrl | parseRepoUrl | pick('owner') }}/${{ values.componentId }}
+module github.com/devops-end2end/${{ values.component_id }}
 
-go 1.22
+go ${{ values.go_version }}

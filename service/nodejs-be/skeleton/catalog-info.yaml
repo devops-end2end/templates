@@ -3,9 +3,19 @@ kind: Component
 metadata:
   name: ${{ values.componentId }}
   title: ${{ values.componentId }}
-  description: ${{ values.description }}
+  description: ${{ values.description | default("Backend service component") }}
+  tags:
+    - nodejs
+    - backend
+  links:
+    - url: http://argocd.local/applications/argocd/${{ values.componentId }}-prod-home1
+      title: ArgoCD (Prod)
+      icon: dashboard
+    - url: http://argocd.local/applications/argocd/${{ values.componentId }}-test-home1
+      title: ArgoCD (Test)
+      icon: dashboard
   annotations:
-    github.com/project-slug: ${{ values.repoUrl | parseRepoUrl | pick('owner') }}/${{ values.repoUrl | parseRepoUrl | pick('repo') }}
+    github.com/project-slug: devops-end2end/${{ values.componentId }}
     backstage.io/techdocs-ref: dir:.
 spec:
   type: service

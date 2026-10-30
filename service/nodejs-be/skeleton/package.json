@@ -7,6 +7,9 @@
     "start": "node src/index.js",
     "test": "jest --detectOpenHandles"
   },
+  "engines": {
+    "node": "${{ values.node_version }}"
+  },
   "dependencies": {
     "express": "^4.19.2"
   },

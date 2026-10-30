@@ -37,6 +37,15 @@ spec:
           ui:options:
             catalogFilter:
               kind: Group
+        nodejs_version:
+          title: Node.js Version
+          type: string
+          default: "20"
+          enum:
+            - "18"
+            - "20"
+            - "22"
+          description: Select the target Node.js version for your frontend application.
 
     - title: Choose Repository Location
       required:
@@ -49,7 +58,8 @@ spec:
           ui:options:
             allowedHosts:
               - github.com
-
+            allowedOwners:
+              - devops-end2end
   steps:
     - id: fetch
       name: Fetch Skeleton Boilerplate
@@ -71,11 +81,19 @@ spec:
         repoUrl: ${{ parameters.repoUrl }}
         access: 'private'
 
-    - id: register
-      name: Register in Backstage Catalog
-      action: catalog:register
+    - id: create-ecr
+      name: Create ECR Repository
+      action: roadiehq:aws:ecr:create
       input:
-        catalogInfoUrl: "${{ steps['publish'].output.catalogInfoUrl }}"
+        repoName: ${{ parameters.componentId }}
+        region: us-east-1
+        imageMutability: true  # false = MUTABLE, true = IMMUTABLE
+        scanOnPush: false
+        tags:
+          - Key: Owner
+            Value: ${{ parameters.owner }}
+          - Key: ManagedBy
+            Value: Backstage
 
   output:
     links:
