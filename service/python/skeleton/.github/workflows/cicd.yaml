@@ -22,7 +22,7 @@ jobs:
       py_version: ${{ values.pythonVersion }}
       description: ${{ values.description }}
       # Uncomment to set
-      #base_image: 'python:3.12'
+      #base_image: 'amazonlinux:2026-minimal'
       #aws_region: us-east-1
       #disable_sonarqube: true
       #disable_snyk: true

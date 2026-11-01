@@ -21,8 +21,11 @@ jobs:
     with:
       java_version: ${{ values.java_version }}
       description: ${{ values.description }}
-      # Optional overrides if supported by your reusable Java workflow:
+      # Optional overrides:
       # aws_region: us-east-1
+      # base_image: amazoncorretto:21-alpine
+      # disable_snyk: false
+      # disable_sonarqube: false
 
   deploy-test:
     needs: [build]
