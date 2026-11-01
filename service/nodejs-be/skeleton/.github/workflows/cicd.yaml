@@ -1,0 +1,87 @@
+name: Build, Deploy, and Promote Pipeline
+
+on:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+    inputs:
+      AUTO_PROMOTE_PROD:
+        description: "Automatically promote to PROD after successful TEST validation"
+        required: false
+        type: boolean
+        default: true
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  build:
+    uses: devops-end2end/github-workflows/.github/workflows/go-docker-build.yaml@main
+    with:
+      go_version: ${{ values.go_version }}
+      description: ${{ values.description }}
+      # Optional overrides:
+      # aws_region: us-east-1
+      # base_image: gcr.io/distroless/static
+      # disable_snyk: false
+      # disable_sonarqube: false
+
+  deploy-test:
+    needs: [build]
+    uses: devops-end2end/github-workflows/.github/workflows/argocd-deployment.yaml@main
+    with:
+      GITOPS_REPO: "gitops"
+      IMAGE: {% raw %}${{ needs.build.outputs.image }}{% endraw %}
+      APPSET_PATH: "apps/${{ values.componentId }}/release-configs/test.yaml"
+      PROJECT_NAME: "${{ values.componentId }}"
+      TIMEOUT: "120"
+      CHECK_HEALTH: "true"
+    secrets:
+      ARGOCD_AUTH_TOKEN: {% raw %}${{ secrets.ARGOCD_AUTH_TOKEN }}{% endraw %}
+      GITOPS_REPO_TOKEN: {% raw %}${{ secrets.GITOPS_REPO_TOKEN }}{% endraw %}
+
+  validate-test:
+    needs: [deploy-test]
+    runs-on: devops-end2end-runners
+    steps:
+      - name: Run Integration & Health Tests
+        run: |
+          echo "Executing test suite against TEST environment..."
+          echo "Querying http://${{ values.componentId }}-test-home1.test.svc.cluster.local:8000/health..."
+          response=$(curl -sL --retry 5 --retry-connrefused --retry-delay 2 http://${{ values.componentId }}-test-home1.test.svc.cluster.local:8000/health)
+          echo "Received response: $response"
+
+          status=$(echo "$response" | grep -o '"status":"[^"]*"' | cut -d'"' -f4)
+
+          # Supports standard Go health responses ("healthy" / "ok") and Spring-style ("UP")
+          if [ "$status" = "healthy" ] || [ "$status" = "ok" ] || [ "$status" = "UP" ]; then
+            echo "Health validation passed. Status is $status."
+            exit 0
+          else
+            echo "Health validation failed. Expected health status, got '$status'."
+            exit 1
+          fi
+
+  deploy-prod:
+    needs: [deploy-test, validate-test, build]
+    if: |
+      always() &&
+      needs.deploy-test.result == 'success' &&
+      needs.validate-test.result == 'success' &&
+      (
+        github.event_name == 'push' ||
+        inputs.AUTO_PROMOTE_PROD == true || 
+        inputs.AUTO_PROMOTE_PROD == 'true'
+      )
+    uses: devops-end2end/github-workflows/.github/workflows/argocd-deployment.yaml@main
+    with:
+      GITOPS_REPO: "gitops"
+      IMAGE: {% raw %}${{ needs.build.outputs.image }}{% endraw %}
+      APPSET_PATH: "apps/${{ values.componentId }}/release-configs/prod.yaml"
+      PROJECT_NAME: "${{ values.componentId }}"
+      TIMEOUT: "300"
+      CHECK_HEALTH: "true"
+    secrets:
+      ARGOCD_AUTH_TOKEN: {% raw %}${{ secrets.ARGOCD_AUTH_TOKEN }}{% endraw %}
+      GITOPS_REPO_TOKEN: {% raw %}${{ secrets.GITOPS_REPO_TOKEN }}{% endraw %}
