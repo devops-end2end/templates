@@ -71,6 +71,7 @@ spec:
           componentId: ${{ parameters.componentId }}
           description: ${{ parameters.description }}
           owner: ${{ parameters.owner }}
+          nodejs_version: ${{ parameters.nodejs_version }}
 
     - id: publish
       name: Publish to Git Repository

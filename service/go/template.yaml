@@ -69,6 +69,7 @@ spec:
           componentId: ${{ parameters.componentId }}
           description: ${{ parameters.description }}
           owner: ${{ parameters.owner }}
+          go_version: ${{ parameters.go_version }}
           destination: ${{ parameters.repoUrl | parseRepoUrl }}
 
     - id: publish
