@@ -18,6 +18,7 @@ spec:
         - componentId
         - description
         - owner
+        - go_version
       properties:
         componentId:
           title: Component ID
