@@ -18,7 +18,6 @@ spec:
         - componentId
         - description
         - owner
-        - java_version
       properties:
         componentId:
           title: Component ID
