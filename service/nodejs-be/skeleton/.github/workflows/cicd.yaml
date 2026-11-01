@@ -17,9 +17,9 @@ permissions:
 
 jobs:
   build:
-    uses: devops-end2end/github-workflows/.github/workflows/go-docker-build.yaml@main
+    uses: devops-end2end/github-workflows/.github/workflows/nodejs-be-docker-build.yaml@main
     with:
-      go_version: ${{ values.go_version }}
+      nodejs_version: ${{ values.nodejs_version }}
       description: ${{ values.description }}
       # Optional overrides:
       # aws_region: us-east-1
