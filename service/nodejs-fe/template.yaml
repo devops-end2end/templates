@@ -19,6 +19,7 @@ spec:
         - componentId
         - description
         - owner
+        - nodejs_version
       properties:
         componentId:
           title: Component ID
@@ -32,11 +33,9 @@ spec:
         owner:
           title: Owner
           type: string
-          description: Owner of the component (Team or User)
-          ui:field: OwnerPicker
-          ui:options:
-            catalogFilter:
-              kind: Group
+          description: Owner of the component (e.g., group:default/platform-engineering)
+          default: "group:default/platform-engineering"
+          ui:field: OwnerPicker 
         nodejs_version:
           title: Node.js Version
           type: string
@@ -73,14 +72,12 @@ spec:
           nodejs_version: ${{ parameters.nodejs_version }}
 
     - id: publish
-      name: Publish to Git Repository
+      name: Publish to GitHub
       action: publish:github
       input:
-        allowedHosts:
-          - github.com
-        description: ${{ parameters.description }}
         repoUrl: ${{ parameters.repoUrl }}
-        access: 'private'
+        description: ${{ parameters.description }}
+        gitCommitMessage: 'Initial commit from Backstage Scaffolder'
 
     - id: create-ecr
       name: Create ECR Repository
