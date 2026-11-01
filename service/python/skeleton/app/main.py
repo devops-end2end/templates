@@ -8,6 +8,12 @@ app = FastAPI(
     version="0.1",
 )
 
+# Unprefixed system health check for K8s probes
+@app.get("/health", tags=["System"])
+async def health_check():
+    return {"status": "UP"}
+
+# Versioned API routes (e.g., /api/v1/...)
 app.include_router(api_router, prefix="/api/v1")
 
 
