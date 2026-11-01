@@ -29,12 +29,6 @@ spec:
           title: Description
           type: string
           description: Brief description of what this service does
-        owner:
-          title: Owner
-          type: string
-          description: Owner of the component (e.g., group:default/platform-engineering)
-          default: "group:default/platform-engineering"
-          ui:field: OwnerPicker
         go_version:
           title: Go Version
           type: string
@@ -44,7 +38,13 @@ spec:
             - "1.22"
             - "1.23"
           description: Select the target Go version for your microservice.
-
+        owner:
+          title: Owner
+          type: string
+          description: Owner of the component (e.g., group:default/platform-engineering)
+          default: "group:default/platform-engineering"
+          ui:field: OwnerPicker
+          
     - title: Choose Repository Location
       required:
         - repoUrl
