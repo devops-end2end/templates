@@ -16,7 +16,7 @@ type Response struct {
 func main() {
     appName := os.Getenv("APP_NAME")
     if appName == "" {
-        appName = "${{ values.component_id }}"
+        appName = "${{ values.componentId }}"
     }
 
     mux := http.NewServeMux()
