@@ -5,8 +5,9 @@ resources:
   - deployment.yaml
   - httproute.yaml
   - service.yaml
-  - alerts.yaml
+  - prometheus-alerts.yaml
   - servicemonitor.yaml
+  - grafanadashboard.yaml
   
 configurations:
   - kustomizeconfig.yaml
