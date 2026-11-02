@@ -11,7 +11,7 @@ spec:
     - ./service/java/template.yaml
     - ./service/go/template.yaml
     - ./deployment/api/template.yaml
-    - ./deployment/api-argo-rollout/template.yaml
+    - ./deployment/argo-rollout/template.yaml
     # - ./deployment/worker/template.yaml
     # - ./deployment/argo-cronworkflow/template.yaml
     # - ./deployment/argo-workflow/template.yaml
