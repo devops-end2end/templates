@@ -2,7 +2,6 @@ apiVersion: monitoring.coreos.com/v1
 kind: PrometheusRule
 metadata:
   name: ${{ values.componentId }}-slo-alerts
-  namespace: {{namespace}}
   labels:
     role: alert-rules
     app.kubernetes.io/name: ${{ values.componentId }}
