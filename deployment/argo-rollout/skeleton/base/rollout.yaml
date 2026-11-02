@@ -1,0 +1,85 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  name: ${{ values.componentId }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ${{ values.componentId }}
+
+  # Define the rollout strategy (Canary is the most common use case)
+  strategy:
+    canary:
+      # Optional: Reference your Ingress or Service Mesh controller for traffic routing
+      # stableService: ${{ values.componentId }}-stable
+      # canaryService: ${{ values.componentId }}-canary
+      
+      steps:
+        - setWeight: 20
+        - pause: { duration: 10s }
+        - setWeight: 50
+        - pause: { duration: 10s }
+        - setWeight: 80
+        - pause: { duration: 10s }
+
+  template:
+    metadata:
+      labels:
+        app: ${{ values.componentId }}
+
+    spec:
+      imagePullSecrets:
+        - name: ecr-docker-secret    
+      containers:
+        - name: ${{ values.componentId }}
+          image: 932399238655.dkr.ecr.us-east-1.amazonaws.com/${{ values.componentId }}
+
+          ports:
+            - containerPort: 8000
+              protocol: TCP
+
+          envFrom:
+            - configMapRef:
+                name: app-configmap
+
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
+
+          startupProbe:
+            httpGet:
+              scheme: HTTP
+              path: /health
+              port: 8000
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            successThreshold: 1
+            failureThreshold: 30
+            timeoutSeconds: 3
+
+          livenessProbe:
+            httpGet:
+              scheme: HTTP
+              path: /health
+              port: 8000
+            periodSeconds: 10
+            successThreshold: 1
+            failureThreshold: 3
+            timeoutSeconds: 3
+
+          readinessProbe:
+            httpGet:
+              scheme: HTTP
+              path: /health
+              port: 8000
+            periodSeconds: 10
+            successThreshold: 1
+            failureThreshold: 3
+            timeoutSeconds: 3

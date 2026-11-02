@@ -1,0 +1,40 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: ${{ values.componentId }}-test
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  generators:
+    - list:
+        elements:
+          - cluster: in-cluster
+            url: https://kubernetes.default.svc
+            env: test
+            datacenter: home1
+  template:
+    metadata:
+      name: "${{ values.componentId }}-{% raw %}{{env}}-{{datacenter}}{% endraw %}"
+      labels:
+        project: ${{ values.componentId }}
+        env: "{% raw %}{{env}}{% endraw %}"
+        datacenter: "{% raw %}{{datacenter}}{% endraw %}"
+      annotations:
+        ingress-host: "${{ values.componentId }}-{% raw %}{{env}}.{{datacenter}}{% endraw %}"
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/devops-end2end/gitops.git
+        targetRevision: HEAD
+        path: "apps/${{ values.componentId }}/env/{% raw %}{{env}}-{{datacenter}}{% endraw %}"
+      destination:
+        server: "{% raw %}{{url}}{% endraw %}"
+        namespace: "{% raw %}{{env}}{% endraw %}"
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+          allowEmpty: true
+        retry:
+          limit: 3
