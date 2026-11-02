@@ -10,6 +10,11 @@ on:
         required: false
         type: boolean
         default: true
+      DELETE_TEST_APPSET:
+        description: "Delete TEST appset after successful TEST validation"
+        required: false
+        type: boolean
+        default: true
 
 permissions:
   id-token: write
@@ -64,7 +69,8 @@ jobs:
           fi
           
   delete-test-appset:
-    needs: [deploy-test]
+    needs: [validate-test]
+    if: inputs.DELETE_TEST_APPSET == true
     uses: devops-end2end/github-workflows/.github/workflows/rm-test-argocd-appset.yaml@main
     with:
       appset_name: ${{ values.componentId }}-test

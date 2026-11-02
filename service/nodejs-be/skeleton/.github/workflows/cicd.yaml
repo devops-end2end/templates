@@ -10,6 +10,11 @@ on:
         required: false
         type: boolean
         default: true
+      DELETE_TEST_APPSET:
+        description: "Delete TEST appset after successful TEST validation"
+        required: false
+        type: boolean
+        default: true
 
 permissions:
   id-token: write
@@ -62,6 +67,15 @@ jobs:
             echo "Health validation failed. Expected health status, got '$status'."
             exit 1
           fi
+
+  delete-test-appset:
+    needs: [validate-test]
+    if: inputs.DELETE_TEST_APPSET == true
+    uses: devops-end2end/github-workflows/.github/workflows/rm-test-argocd-appset.yaml@main
+    with:
+      appset_name: ${{ values.componentId }}-test
+    secrets:
+      ARGOCD_AUTH_TOKEN: ${{ secrets.ARGOCD_AUTH_TOKEN }}
 
   deploy-prod:
     needs: [deploy-test, validate-test, build]
