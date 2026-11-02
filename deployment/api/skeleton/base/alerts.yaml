@@ -1,0 +1,57 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: ${{ values.componentId }}-slo-alerts
+  namespace: {{namespace}}
+  labels:
+    role: alert-rules
+    app.kubernetes.io/name: ${{ values.componentId }}
+    gitops.service/golden-path: "true"
+spec:
+  groups:
+    - name: ${{ values.componentId }}-slo-burn-rates
+      rules:
+        # --- 1. Compute Error Ratios (SLI) ---
+        # 5m HTTP 5xx Ratio
+        - record: job:http_requests_error_ratio:rate5m
+          expr: |
+            sum(rate(http_requests_total{app="${{ values.componentId }}", status=~"5.."}[5m]))
+            /
+            sum(rate(http_requests_total{app="${{ values.componentId }}"}[5m]))
+
+        # 1h HTTP 5xx Ratio
+        - record: job:http_requests_error_ratio:rate1h
+          expr: |
+            sum(rate(http_requests_total{app="${{ values.componentId }}", status=~"5.."}[1h]))
+            /
+            sum(rate(http_requests_total{app="${{ values.componentId }}"}[1h]))
+
+        # --- 2. High Burn Rate Alert (Page: 2% budget spent in 1 hour) ---
+        - alert: ${{ values.componentId }}SLOErrorBudgetBurnFast
+          expr: |
+            (job:http_requests_error_ratio:rate5m{app="${{ values.componentId }}"} > (14.4 * (1 - 0.999)))
+            and
+            (job:http_requests_error_ratio:rate1h{app="${{ values.componentId }}"} > (14.4 * (1 - 0.999)))
+          for: 2m
+          labels:
+            severity: critical
+            slo: availability
+            tier: golden-path
+          annotations:
+            summary: "High Error Budget Burn Rate on ${{ values.componentId }}"
+            description: "${{ values.componentId }} is burning its 30-day availability error budget at 14.4x rate (consuming >2% in 1 hour)."
+            runbook_url: "https://docs.internal/runbooks/slo-burn-rate"
+
+        # --- 3. Slow Burn Rate Alert (Ticket: 5% budget spent in 6 hours) ---
+        - alert: ${{ values.componentId }}SLOErrorBudgetBurnSlow
+          expr: |
+            (job:http_requests_error_ratio:rate1h{app="${{ values.componentId }}"} > (6 * (1 - 0.999)))
+          for: 15m
+          labels:
+            severity: warning
+            slo: availability
+            tier: golden-path
+          annotations:
+            summary: "Elevated Error Budget Burn Rate on ${{ values.componentId }}"
+            description: "${{ values.componentId }} is burning its 30-day error budget at 6x rate (consuming >5% in 6 hours)."
+            runbook_url: "https://docs.internal/runbooks/slo-burn-rate"
