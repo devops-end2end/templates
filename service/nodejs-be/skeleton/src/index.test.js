@@ -10,9 +10,9 @@ describe('API Endpoints', () => {
         expect(response.body.docs_url).toBe('/docs');
     });
 
-    test('GET /health returns UP status', async () => {
+    test('GET /health returns healthy status', async () => {
         const response = await request(app).get('/health');
         expect(response.statusCode).toBe(200);
-        expect(response.body).toEqual({ status: 'UP' });
+        expect(response.body).toEqual({ status: 'healthy' });
     });
 });

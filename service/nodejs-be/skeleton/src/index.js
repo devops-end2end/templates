@@ -14,7 +14,7 @@ app.get('/', (req, res) => {
 });
 
 app.get('/health', (req, res) => {
-    res.status(200).json({ status: 'UP' });
+    res.status(200).json({ status: 'healthy' });
 });
 
 /* Exporting module.exports = app alongside the if (require.main === module) check

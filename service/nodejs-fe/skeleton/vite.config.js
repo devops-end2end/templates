@@ -6,7 +6,6 @@ export default defineConfig({
   server: {
     port: 3000,
     proxy: {
-      // Forward API requests from port 3000 to the backend running on port 8000
       '/api': {
         target: 'http://localhost:8000',
         changeOrigin: true,
@@ -14,6 +13,9 @@ export default defineConfig({
       },
     },
   },
+  test: {
+    environment: 'jsdom',
+    globals: true,
+    setupFiles: './test/setup.js',
+  },
 });
-
-
