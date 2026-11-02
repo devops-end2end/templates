@@ -1,3 +1,18 @@
+# Google SRE Multi-Window Multi-Burn-Rate Alerting model.
+# SLOs focus on user-impacting behavior over a sliding time window (typically 30 days).
+# The most resilient way to alert on SLO breaches without excessive noise is monitoring the Burn Rate of your error budget
+
+# The Core SLO Formula & Alert Logic
+# 100% Error Budget Consumption over 30 days = steady burn rate of 1.
+# Fast Burn (Critical Alert): Consuming 2% of error budget in 1 hour (Burn Rate =14.4). Requires immediate page.
+# Slow Burn (Warning Alert): Consuming 5% of error budget in 6 hours (Burn Rate =6). Triggers a ticket or notification.
+
+# BurnRate=ErrorRatio/AllowedUnreliability(1-SLO)
+
+# For a 99.9% Availability SLO (AllowedUnreliability=0.001), a $2\%$ error rate over 1 hour yields:
+
+# BurnRate=0.02/0.001=20
+
 apiVersion: monitoring.coreos.com/v1
 kind: PrometheusRule
 metadata:
@@ -26,7 +41,7 @@ spec:
             sum(rate(http_requests_total{app="${{ values.componentId }}"}[1h]))
 
         # --- 2. High Burn Rate Alert (Page: 2% budget spent in 1 hour) ---
-        - alert: ${{ values.componentId }}SLOErrorBudgetBurnFast
+        - alert: ${{ values.componentId }}-SLOErrorBudgetBurnFast
           expr: |
             (job:http_requests_error_ratio:rate5m{app="${{ values.componentId }}"} > (14.4 * (1 - 0.999)))
             and
@@ -42,7 +57,7 @@ spec:
             runbook_url: "https://docs.internal/runbooks/slo-burn-rate"
 
         # --- 3. Slow Burn Rate Alert (Ticket: 5% budget spent in 6 hours) ---
-        - alert: ${{ values.componentId }}SLOErrorBudgetBurnSlow
+        - alert: ${{ values.componentId }}-SLOErrorBudgetBurnSlow
           expr: |
             (job:http_requests_error_ratio:rate1h{app="${{ values.componentId }}"} > (6 * (1 - 0.999)))
           for: 15m
