@@ -5,6 +5,6 @@ on:
 
 jobs:
   delete-test-appset:
-    uses: devops-end2end/github-workflows/.github/workflows/rm-test-argocd-appset.yaml@main
+    uses: devops-end2end/github-workflows/.github/workflows/rm-argocd-appset.yaml@main
     secrets:
       ARGOCD_AUTH_TOKEN: ${{ secrets.ARGOCD_AUTH_TOKEN }}
