@@ -74,7 +74,7 @@ jobs:
     with:
       appset_name: ${{ values.componentId }}-test
     secrets:
-      ARGOCD_AUTH_TOKEN: ${{ secrets.ARGOCD_AUTH_TOKEN }}
+      ARGOCD_AUTH_TOKEN: {% raw %}${{ secrets.ARGOCD_AUTH_TOKEN }}{% endraw %}
 
   deploy-prod:
     needs: [deploy-test, validate-test, build]
