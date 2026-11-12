@@ -72,7 +72,7 @@ jobs:
     if: inputs.DELETE_TEST_APPSET == true
     uses: devops-end2end/github-workflows/.github/workflows/rm-argocd-appset.yaml@main
     with:
-      appset_name: ${{ values.componentId }}-test-home1
+      appset_name: ${{ values.componentId }}-test
     secrets:
       ARGOCD_AUTH_TOKEN: {% raw %}${{ secrets.ARGOCD_AUTH_TOKEN }}{% endraw %}
 
