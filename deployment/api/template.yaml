@@ -3,7 +3,7 @@ kind: Template
 metadata:
   name: api-deployment-template
   title: API Service - Deployment
-  description: Generates GitOps deployment manifests for an API Service and creates a Pull Request in the gitops repository under /apps/<componentId>
+  description: Generates GitOps configurations to deploy an API Service using a "deployment" manifest and creates a Pull Request in the gitops repository under /apps/<componentId>
   tags:
     - deployment
     - gitops
