@@ -12,7 +12,7 @@ metadata:
     - kustomize
     - argocd
 spec:
-  owner: group:default/engineering
+  owner: group:default/platform-engineering
   type: deployment
 
   # 1. Define UI inputs gathered from the user

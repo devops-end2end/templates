@@ -11,7 +11,7 @@ metadata:
     - rest
     - golden-path
 spec:
-  owner: group:default/engineering
+  owner: group:default/platform-engineering 
   type: service
 
   # 1. Define UI inputs gathered from the user
