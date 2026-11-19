@@ -2,13 +2,14 @@ apiVersion: scaffolder.backstage.io/v1beta3
 kind: Template
 metadata:
   name: python-service-template
-  title: Python Service Template
-  description: Creates a new Python microservice repository in GitHub
+  title: Python API Service - Golden Path
+  description: Production-ready Python FastAPI microservice template adhering to enterprise standards.
   tags:
     - python
     - fastapi
     - microservice
     - rest
+    - golden-path
 spec:
   owner: group:default/engineering
   type: service

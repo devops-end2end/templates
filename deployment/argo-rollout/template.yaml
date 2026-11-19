@@ -1,9 +1,9 @@
 apiVersion: scaffolder.backstage.io/v1beta3
 kind: Template
 metadata:
-  name: api-rollout-template
-  title: API Argo Rollout Template
-  description: Generates GitOps Argo Rollout manifests and creates a Pull Request in the gitops repository under /apps/<componentId>
+  name: api-rollout-gitops-template
+  title: API Service - Argo Rollout GitOps Configuration
+  description: Generates GitOps configurations to deploy an API service on Kubernetes using Argo Rollouts and creates a Pull Request in the "gitops" repository  under /apps/<componentId>
   tags:
     - deployment
     - gitops

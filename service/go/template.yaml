@@ -2,7 +2,7 @@ apiVersion: scaffolder.backstage.io/v1beta3
 kind: Template
 metadata:
   name: go-api-service-golden-path
-  title: Go API Service Golden Path
+  title: Go API Service - Golden Path
   description: Production-ready Go microservice template using Go standard library and best practices.
   tags:
     - go

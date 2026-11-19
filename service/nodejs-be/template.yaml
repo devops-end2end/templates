@@ -2,7 +2,7 @@ apiVersion: scaffolder.backstage.io/v1beta3
 kind: Template
 metadata:
   name: nodejs-express-golden-path
-  title: Node.js Express API Service Golden Path
+  title: Node.js/Express Backend Service - Golden Path
   description: Production-ready Node.js Express microservice template adhering to enterprise standards.
   tags:
     - nodejs

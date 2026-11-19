@@ -2,7 +2,7 @@ apiVersion: scaffolder.backstage.io/v1beta3
 kind: Template
 metadata:
   name: java-spring-boot-golden-path
-  title: Java Spring Boot Golden Path Service
+  title: Java/Spring Boot API Service - Golden Path
   description: Production-ready Java Spring Boot microservice template adhering to enterprise standards.
   tags:
     - java

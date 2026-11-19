@@ -1,8 +1,8 @@
 apiVersion: scaffolder.backstage.io/v1beta3
 kind: Template
 metadata:
-  name: react-frontend-golden-path
-  title: React Frontend Application Golden Path
+  name: nodejs-frontend-golden-path
+  title: Node.js/React Frontend Service - Golden Path
   description: Production-ready React & Vite frontend micro-frontend template adhering to enterprise standards.
   tags:
     - react

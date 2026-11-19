@@ -2,7 +2,7 @@ apiVersion: scaffolder.backstage.io/v1beta3
 kind: Template
 metadata:
   name: api-deployment-template
-  title: API Deployment Template
+  title: API Deployment Configuration - GitOps
   description: Generates GitOps deployment manifests and creates a Pull Request in the gitops repository under /apps/<componentId>
   tags:
     - deployment
